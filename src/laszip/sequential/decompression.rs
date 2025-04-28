@@ -139,11 +139,6 @@ impl<'a, R: Read + Seek + Send + 'a> LasZipDecompressor<'a, R> {
     /// - The data is written in the buffer exactly as it would have been in a LAS File
     ///   in Little Endian order,
     pub fn decompress_one(&mut self, mut out: &mut [u8]) -> std::io::Result<()> {
-        if self.chunk_points_read == self.num_points_in_chunk {
-            self.reset_for_new_chunk();
-            self.current_chunk += 1;
-        }
-
         self.record_decompressor.decompress_next(&mut out)?;
         self.chunk_points_read += 1;
 
